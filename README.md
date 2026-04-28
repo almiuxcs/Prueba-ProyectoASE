@@ -44,10 +44,6 @@ ase-proyecto-ejemplo/
 │   └── 04_visualizaciones/         ← Figuras finales para el escrito
 │
 ├── 📁 escrito/
-│   ├── main.tex                    ← Documento principal LaTeX
-│   ├── secciones/                  ← Capítulos separados por archivo
-│   ├── figuras/                    ← Imágenes embebidas en el escrito
-│   └── tablas/                     ← Tablas en formato .tex
 │
 ├── 📁 presentaciones/
 │   ├── avance1/                    ← Primera presentación de avance
@@ -58,9 +54,6 @@ ase-proyecto-ejemplo/
 │   ├── figuras/                    ← Gráficas generadas por los scripts
 │   ├── tablas/                     ← Resultados numéricos en CSV/LaTeX
 │   └── modelos_guardados/          ← Modelos serializados (.pkl, .joblib)
-│
-└── 📁 referencias/
-    └── bibliografia.bib            ← Referencias en BibTeX
 ```
 
 ---
