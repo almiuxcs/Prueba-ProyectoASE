@@ -1,0 +1,184 @@
+% ============================================================
+% presentaciones/avance1/slides.tex
+% Primer avance — Proyecto ASE
+% Compilar: pdflatex slides.tex
+% ============================================================
+
+\documentclass[aspectratio=169, 12pt]{beamer}
+
+% ---------- Tema y colores IBERO ----------
+\usetheme{Madrid}
+\usecolortheme{default}
+\definecolor{iberoazul}{RGB}{0, 56, 101}
+\definecolor{iberoverde}{RGB}{0, 148, 115}
+\setbeamercolor{structure}{fg=iberoazul}
+\setbeamercolor{frametitle}{bg=iberoazul, fg=white}
+\setbeamercolor{title}{fg=white, bg=iberoazul}
+\setbeamercolor{block title}{bg=iberoverde, fg=white}
+
+% ---------- Paquetes ----------
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{booktabs}
+
+% ---------- Metadatos ----------
+\title[Siniestralidad GMM]{Predicción de Siniestralidad en\\
+Seguros de Gastos Médicos Mayores}
+\subtitle{Avance 1: Planteamiento y EDA}
+\author[García · Mendoza · Torres]{Ana García \and Carlos Mendoza \and Sofía Torres}
+\institute[IBERO]{Universidad Iberoamericana Ciudad de México\\
+Licenciatura en Actuaría}
+\date{Primavera 2025}
+
+% ============================================================
+\begin{document}
+% ============================================================
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+% ---- Tabla de contenidos -----------------------------------
+\begin{frame}{Contenido}
+  \tableofcontents
+\end{frame}
+
+% ---- Sección 1 ---------------------------------------------
+\section{Motivación y Pregunta de Investigación}
+
+\begin{frame}{Contexto: Mercado GMM en México}
+  \begin{columns}
+    \column{0.55\textwidth}
+      \begin{itemize}
+        \item El ramo GMM representa \textbf{28\% de primas totales} del sector vida y accidentes (CNSF, 2022)
+        \item Crecimiento promedio anual: \textbf{8.3\%} en los últimos 5 años
+        \item Desafío principal: inflación médica supera inflación general en \textbf{3–5 pp} anuales
+        \item Siniestralidad promedio del sector: \textbf{68\%} (2022)
+      \end{itemize}
+    \column{0.40\textwidth}
+      % \includegraphics[width=\textwidth]{figuras/primas_gmm_tendencia.pdf}
+      \textit{[Figura: evolución de primas GMM]}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Pregunta de Investigación}
+  \begin{block}{Pregunta central}
+    ¿Pueden los modelos GLM y gradient boosting mejorar la estimación de la \textbf{prima pura} respecto a los métodos actuariales tradicionales para carteras de GMM en México?
+  \end{block}
+
+  \vspace{0.5em}
+  \textbf{Sub-preguntas:}
+  \begin{enumerate}
+    \item ¿Qué variables de riesgo tienen mayor poder predictivo sobre la frecuencia de siniestros?
+    \item ¿La distribución Gamma es adecuada para modelar la severidad en esta cartera?
+    \item ¿El modelo compuesto XGBoost supera estadísticamente al GLM Poisson-Gamma?
+  \end{enumerate}
+\end{frame}
+
+% ---- Sección 2 ---------------------------------------------
+\section{Descripción de los Datos}
+
+\begin{frame}{Dataset: Cartera GMM 2019–2023}
+  \begin{table}
+    \centering
+    \caption{Resumen de la cartera analizada}
+    \begin{tabular}{lrr}
+      \toprule
+      \textbf{Característica} & \textbf{Pólizas} & \textbf{Siniestros} \\
+      \midrule
+      Total de registros & 14,823 & 41,670 \\
+      Periodo & 2019–2023 & 2019–2023 \\
+      \% sin siniestros & 61.4\% & — \\
+      Monto promedio & — & \$42,300 MXN \\
+      Suma asegurada mediana & \$3'000,000 MXN & — \\
+      \bottomrule
+    \end{tabular}
+  \end{table}
+\end{frame}
+
+\begin{frame}{Variables de riesgo disponibles}
+  \begin{columns}
+    \column{0.48\textwidth}
+      \textbf{Variables del contratante:}
+      \begin{itemize}
+        \item Edad (18–85 años)
+        \item Sexo (M/F)
+        \item Región (CDMX, Norte, Centro, Sur)
+        \item Tipo de plan (Individual/Familiar)
+      \end{itemize}
+    \column{0.48\textwidth}
+      \textbf{Variables del contrato:}
+      \begin{itemize}
+        \item Suma asegurada
+        \item Deducible
+        \item Coaseguro (\%)
+        \item Antigüedad en cartera
+        \item Nivel hospitalario (1–3)
+      \end{itemize}
+  \end{columns}
+\end{frame}
+
+% ---- Sección 3 ---------------------------------------------
+\section{Análisis Exploratorio}
+
+\begin{frame}{Distribución de frecuencia de siniestros}
+  \begin{columns}
+    \column{0.5\textwidth}
+      % \includegraphics[width=\textwidth]{figuras/hist_frecuencia.pdf}
+      \textit{[Figura: histograma de N]}
+
+      \vspace{0.5em}
+      \small Prueba de sobredispersión: $\hat{\phi} = 1.23$\\
+      (leve sobredispersión respecto a Poisson)
+    \column{0.5\textwidth}
+      \begin{table}
+        \small
+        \begin{tabular}{lr}
+          \toprule
+          Estadístico & Valor \\
+          \midrule
+          Media $\bar{N}$ & 2.81 \\
+          Varianza & 3.45 \\
+          Mediana & 2 \\
+          Máximo & 18 \\
+          \% $N=0$ & 61.4\% \\
+          \bottomrule
+        \end{tabular}
+      \end{table}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Plan de trabajo}
+  \begin{table}
+    \centering
+    \begin{tabular}{clc}
+      \toprule
+      \textbf{Semana} & \textbf{Actividad} & \textbf{Estado} \\
+      \midrule
+      1–2 & Obtención y limpieza de datos & {\color{green}✓} \\
+      3–4 & Análisis exploratorio & {\color{green}✓} \\
+      5–6 & Modelado de frecuencia (GLM + XGB) & {\color{orange}En curso} \\
+      7–8 & Modelado de severidad & Pendiente \\
+      9–10 & Modelo compuesto y tarificación & Pendiente \\
+      11–12 & Escritura y presentación final & Pendiente \\
+      \bottomrule
+    \end{tabular}
+  \end{table}
+\end{frame}
+
+% ---- Cierre ------------------------------------------------
+\begin{frame}
+  \centering
+  \vspace{1em}
+  {\Large \textbf{Gracias}}\\[1em]
+  {\large Preguntas y comentarios}\\[2em]
+  \small
+  \texttt{ana.garcia@ibero.mx}\\
+  \texttt{carlos.mendoza@ibero.mx}\\
+  \texttt{sofia.torres@ibero.mx}\\[1em]
+  Código y datos: \texttt{github.com/usuario/ase-siniestralidad-gmm}
+\end{frame}
+
+\end{document}

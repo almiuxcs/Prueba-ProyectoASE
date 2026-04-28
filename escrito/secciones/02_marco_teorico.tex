@@ -1,0 +1,69 @@
+% ============================================================
+% secciones/02_marco_teorico.tex
+% ============================================================
+
+\section{Marco Teórico}
+\label{sec:marco}
+
+\subsection{Modelo compuesto frecuencia-severidad}
+
+Sea $S$ la pérdida agregada de una póliza durante un periodo de vigencia. El modelo actuarial estándar descompone $S$ como:
+
+\begin{equation}
+  S = \sum_{i=1}^{N} X_i
+  \label{eq:modelo_compuesto}
+\end{equation}
+
+donde $N$ denota el número de reclamaciones (frecuencia) y $X_i$ el monto de la $i$-ésima reclamación (severidad), asumiendo que $N$ y los $X_i$ son independientes.
+
+\begin{definition}[Prima pura]
+La \textbf{prima pura} o \textbf{prima de riesgo} se define como la esperanza de la pérdida agregada:
+\begin{equation}
+  \Pi = \mathbb{E}[S] = \mathbb{E}[N] \cdot \mathbb{E}[X]
+  \label{eq:prima_pura}
+\end{equation}
+\end{definition}
+
+\subsection{Modelos de frecuencia: distribución Poisson}
+
+Para la componente de frecuencia, se asume $N \sim \text{Poisson}(\lambda)$ con función de masa de probabilidad:
+
+\begin{equation}
+  P(N = k) = \frac{e^{-\lambda} \lambda^k}{k!}, \quad k = 0, 1, 2, \ldots
+\end{equation}
+
+En el marco GLM con liga logarítmica, la tasa de siniestralidad se modela como:
+
+\begin{equation}
+  \log(\lambda_i) = \log(e_i) + \boldsymbol{x}_i^\top \boldsymbol{\beta}
+\end{equation}
+
+donde $e_i$ es la exposición (tiempo en riesgo) de la $i$-ésima póliza y $\boldsymbol{x}_i$ el vector de covariables \citep{McCullagh1989}.
+
+\subsection{Modelos de severidad: distribución Gamma}
+
+Para la severidad, dado que $X > 0$, se utiliza la distribución Gamma con función de densidad:
+
+\begin{equation}
+  f(x; \alpha, \beta) = \frac{\beta^\alpha}{\Gamma(\alpha)} x^{\alpha-1} e^{-\beta x}, \quad x > 0
+\end{equation}
+
+Con liga logarítmica: $\log(\mu_i) = \boldsymbol{x}_i^\top \boldsymbol{\gamma}$, donde $\mu_i = \alpha_i / \beta_i$.
+
+\subsection{Gradient Boosting para datos actuariales}
+
+El algoritmo XGBoost \citep{Chen2016} construye un ensamble de árboles de decisión de forma aditiva:
+
+\begin{equation}
+  \hat{y}_i^{(t)} = \hat{y}_i^{(t-1)} + f_t(\boldsymbol{x}_i)
+\end{equation}
+
+minimizando en cada iteración $t$ el objetivo regularizado:
+
+\begin{equation}
+  \mathcal{L}^{(t)} = \sum_{i=1}^{n} \ell\!\left(y_i,\, \hat{y}_i^{(t)}\right) + \Omega(f_t)
+\end{equation}
+
+donde $\Omega(f_t) = \gamma T + \frac{1}{2}\lambda \|\boldsymbol{w}\|^2$ penaliza la complejidad del árbol.
+
+Para la frecuencia se utiliza la función de pérdida de Poisson ($\ell = -\log P(N=k|\lambda)$) y para la severidad la pérdida de Gamma.

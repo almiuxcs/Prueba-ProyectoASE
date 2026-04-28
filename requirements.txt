@@ -1,0 +1,31 @@
+# ============================================================
+# Dependencias del proyecto ASE - Siniestralidad GMM
+# Generado con: pip freeze > requirements.txt
+# Python 3.10
+# ============================================================
+
+# Manipulación de datos
+numpy==1.26.4
+pandas==2.2.1
+scipy==1.13.0
+
+# Modelos estadísticos y ML
+scikit-learn==1.4.2
+statsmodels==0.14.2
+xgboost==2.0.3
+imbalanced-learn==0.12.2
+
+# Visualización
+matplotlib==3.8.4
+seaborn==0.13.2
+plotly==5.21.0
+
+# Utilidades
+joblib==1.4.0
+tqdm==4.66.2
+python-dotenv==1.0.1
+
+# Notebooks
+jupyter==1.0.0
+ipykernel==6.29.4
+nbformat==5.10.4

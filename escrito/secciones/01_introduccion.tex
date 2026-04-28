@@ -1,0 +1,31 @@
+% ============================================================
+% secciones/01_introduccion.tex
+% ============================================================
+
+\section{Introducción}
+\label{sec:intro}
+
+El mercado de seguros de Gastos Médicos Mayores (GMM) en México ha experimentado un crecimiento sostenido durante la última década. Según la Comisión Nacional de Seguros y Fianzas \citep{CNSF2023}, las primas emitidas en este ramo alcanzaron los \$98{,}000 millones de pesos en 2022, representando el 28\% del total del sector de vida y accidentes.
+
+La correcta estimación de la siniestralidad es fundamental para la viabilidad técnica de las aseguradoras. Un modelo de tarificación deficiente puede conducir tanto a la subestimación de riesgos —con consecuencias de insolvencia— como a la sobreestimación, que reduce la competitividad de la cartera \citep{DeJong2008}.
+
+\subsection{Motivación}
+
+Los modelos actuariales clásicos, basados en la familia de Modelos Lineales Generalizados (GLM), han sido el estándar de la industria por décadas \citep{Nelder1972}. Sin embargo, la creciente disponibilidad de datos longitudinales y el desarrollo de técnicas de \textit{machine learning} han abierto la posibilidad de modelos más flexibles que capturen relaciones no lineales entre las variables de riesgo y la siniestralidad observada.
+
+\subsection{Objetivos}
+
+\textbf{Objetivo general:} Desarrollar y comparar modelos de predicción de prima pura para una cartera de GMM, evaluando su desempeño predictivo y su interpretabilidad actuarial.
+
+\textbf{Objetivos específicos:}
+\begin{enumerate}
+  \item Describir la distribución de frecuencia y severidad de siniestros en la cartera analizada.
+  \item Ajustar modelos GLM Poisson-Gamma como línea base actuarial.
+  \item Implementar modelos XGBoost para frecuencia y severidad de forma separada.
+  \item Comparar ambos enfoques mediante métricas de error predictivo y pruebas estadísticas.
+  \item Discutir la aplicabilidad de los resultados para la tarificación en el mercado mexicano.
+\end{enumerate}
+
+\subsection{Organización del documento}
+
+El resto del trabajo se organiza de la siguiente manera: la Sección~\ref{sec:marco} presenta el marco teórico del modelo compuesto frecuencia-severidad y los fundamentos de XGBoost; la Sección~\ref{sec:metodo} describe la metodología de validación; la Sección~\ref{sec:datos} caracteriza los datos utilizados; la Sección~\ref{sec:resultados} presenta y discute los resultados; y la Sección~\ref{sec:conclusiones} ofrece las conclusiones y recomendaciones.
